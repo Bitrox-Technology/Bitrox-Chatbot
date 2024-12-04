@@ -13,12 +13,14 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(helmet())
+app.use(helmet({
+    crossOriginResourcePolicy: false,
+}))
 app.use(cors({
-    "origin": "https://bitrox-chatbot-frontend-68jdzhcnd-ashishs-projects-cab18589.vercel.app",
-    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-    "allowedHeaders": "Origin, X-Requested-With, Content-Type, Accept",
-    "optionsSuccessStatus": 204
+    origin: "https://bitrox-chatbot-frontend-68jdzhcnd-ashishs-projects-cab18589.vercel.app",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
+    optionsSuccessStatus: 204
 }));
 
 app.get("/", (req, res) => res.send("Express on Vercel."));
