@@ -17,7 +17,7 @@ app.use(helmet())
 app.use(cors({
     "origin": "https://bitrox-chatbot-frontend-68jdzhcnd-ashishs-projects-cab18589.vercel.app",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-    "preflightContinue": false,
+    "allowedHeaders": "Origin, X-Requested-With, Content-Type, Accept",
     "optionsSuccessStatus": 204
 }));
 
