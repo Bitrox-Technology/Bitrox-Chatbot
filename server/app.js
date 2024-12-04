@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 app.use(helmet())
 app.use(cors({
-    "origin": "http://localhost:3000",
+    "origin": "https://bitrox-chatbot-frontend-68jdzhcnd-ashishs-projects-cab18589.vercel.app/",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     "preflightContinue": false,
     "optionsSuccessStatus": 204
