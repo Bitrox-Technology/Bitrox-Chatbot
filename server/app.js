@@ -21,7 +21,12 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(helmet())
-app.use(cors());
+app.use(cors({
+    "origin": "http://localhost:3000",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+}));
 
 app.get("/", (req, res) => res.send("Express on Vercel."));
 
