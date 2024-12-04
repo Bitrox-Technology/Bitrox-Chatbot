@@ -20,7 +20,7 @@ const Chatbot = () => {
 
         try {
 
-            const response = await axios.post('https://bitrox-chatbot-3jjhreivm-ashishs-projects-cab18589.vercel.app//api/chat', { prompt: input });
+            const response = await axios.post('https://bitrox-chatbot-3jjhreivm-ashishs-projects-cab18589.vercel.app/api/chat', { prompt: input });
             setMessages([...newMessages, { sender: 'bot', text: response.data.response }]);
         } catch (error) {
             console.error('Error fetching AI response:', error.message);
