@@ -13,9 +13,10 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors(
     {
-        origin: 'http://localhost:3000', 
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
-        allowedHeaders: ['Origin', 'Content-Type', 'Authorization'], 
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Origin', 'Content-Type', 'Authorization'],
+        credentials: true,
     }
 ));
 
@@ -33,10 +34,12 @@ app.use((req, res, next) => {
     res.append('Access-Control-Expose-Headers', 'x-total, x-total-pages');
     next();
 });
+
+
 // Middleware
 app.use(express.json());
 app.get("/", (req, res) => res.send("Vercel to deploy Gemini AI Chatbot Backend!!!"));
-app.get("/hello", (req, res) => res.send("Hello Bitroc!!!"))
+app.get("/hello", (req, res) => res.send("Hello Bitrox!!!"))
 // Chatbot Route
 app.use("/api", userRouter)
 

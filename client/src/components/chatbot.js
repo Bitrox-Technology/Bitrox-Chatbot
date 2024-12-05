@@ -25,7 +25,7 @@ const Chatbot = () => {
         setMessages(newMessages);
 
         try {
-            const response = await axios.post('https://bitrox-chatbot-backend.vercel.app/api/chat', { prompt: input });
+            const response = await axios.post('https://bitrox-chatbot-bs3z4xp2e-ashishs-projects-cab18589.vercel.app/api/chat', { prompt: input });
 
             // Split the response into heading and additional content
             const [heading, ...content] = response.data.data.split('\n\n') || 'I could not understand that.';
