@@ -1,12 +1,16 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const helmet = require('helmet')
-const dotenv = require("dotenv")
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+import dotenv from 'dotenv';
+import express from 'express'
+import cors from 'cors'; 
+import helmet from 'helmet';
+import morgan from 'morgan';
+import { ApiError } from './utils/apiErrors.js';
+import { userRouter } from './routes/user.js';
+
 dotenv.config()
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.get("/", (req, res) => res.send("Vercel to deploy Gemini AI Chatbot Backend!!!"));
 
 app.use((req, res, next) => {
     res.append('Access-Control-Expose-Headers', 'x-total, x-total-pages');
@@ -17,33 +21,41 @@ app.use(helmet({
     crossOriginResourcePolicy: false,
 }))
 app.use(cors({
-    origin: "https://bitrox-chatbot-frontend-68jdzhcnd-ashishs-projects-cab18589.vercel.app",
+    origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
     optionsSuccessStatus: 204
 }));
 
-app.get("/", (req, res) => res.send("Express on Vercel."));
+morgan.format('custom', ':method :url :status :res[content-length] - :response-time ms')
+app.use(morgan('custom'))
+
 
 // Middleware
-app.use(bodyParser.json());
-
-// Google Generative AI Configuration
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+app.use(express.json());
 
 // Chatbot Route
-app.post('/api/chat', async (req, res) => {
-    const { prompt } = req.body;
+app.use("/api", userRouter)
 
-    try {
-        const result = await model.generateContent(prompt);
-        res.json({ response: result.response.text() });
-    } catch (error) {
-        console.error('Error generating response:', error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
+app.use(function (err, req, res, next) {
+    console.error(err);
+    const status = err.status || 400;
+    if (err.message == "jwt expired" || err.message == "Authentication error") { res.status(401).send({ status: 401, message: err }); }
+    
+    if (err instanceof ApiError) {
+        return res.status(err.statusCode).json({
+            status: err.statusCode,
+            message: err.message,
+            data: err.data,
+            success: err.success,
+            errors: err.errors
+        });
     }
+    else if (err.Error) res.status(status).send({ status: status, message: err.Error });
+    else if (err.message) res.status(status).send({ status: status, message: err.message });
+    else res.status(status).send({ status: status, message: err.message });
 });
+
 
 // Start Server
 app.listen(PORT, () => console.log(`Server running on: ${PORT}`));
