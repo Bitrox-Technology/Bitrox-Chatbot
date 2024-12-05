@@ -10,14 +10,19 @@ dotenv.config()
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.get("/", (req, res) => res.send("Vercel to deploy Gemini AI Chatbot Backend!!!"));
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+  });
+
+
 
 app.use((req, res, next) => {
     res.append('Access-Control-Expose-Headers', 'x-total, x-total-pages');
-    next();
-});
-app.all('*', (req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
     next();
 });
 
@@ -32,7 +37,7 @@ app.use(morgan('custom'))
 
 // Middleware
 app.use(express.json());
-
+app.get("/", (req, res) => res.send("Vercel to deploy Gemini AI Chatbot Backend!!!"));
 // Chatbot Route
 app.use("/api", userRouter)
 
