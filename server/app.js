@@ -36,6 +36,7 @@ app.use((req, res, next) => {
 // Middleware
 app.use(express.json());
 app.get("/", (req, res) => res.send("Vercel to deploy Gemini AI Chatbot Backend!!!"));
+app.get("/hello", (req, res) => res.send("Hello Bitroc!!!"))
 // Chatbot Route
 app.use("/api", userRouter)
 

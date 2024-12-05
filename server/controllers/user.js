@@ -7,6 +7,7 @@ import { ApiResponse } from '../utils/apiResponse.js';
 // Chatbot Route
 const Chatbot = async (req, res, next) => {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
+    console.log(process.env.GEMINI_API)
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const { prompt } = req.body;
