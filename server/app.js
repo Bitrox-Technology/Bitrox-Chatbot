@@ -22,9 +22,8 @@ app.use(helmet({
 }))
 app.use(cors({
     origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: "Origin",
-    preflightContinue: false,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
     optionsSuccessStatus: 204
 }));
 
