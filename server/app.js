@@ -16,16 +16,15 @@ app.use((req, res, next) => {
     res.append('Access-Control-Expose-Headers', 'x-total, x-total-pages');
     next();
 });
+app.all('*', (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+});
 
 app.use(helmet({
     crossOriginResourcePolicy: false,
 }))
-app.use(cors({
-    origin: "*",
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
-    credentials: true
-}));
+app.use(cors());
 
 morgan.format('custom', ':method :url :status :res[content-length] - :response-time ms')
 app.use(morgan('custom'))
