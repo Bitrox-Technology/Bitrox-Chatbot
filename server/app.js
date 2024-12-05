@@ -24,7 +24,7 @@ app.use(cors({
     origin: "*",
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
-    optionsSuccessStatus: 204
+    credentials: true
 }));
 
 morgan.format('custom', ':method :url :status :res[content-length] - :response-time ms')
