@@ -5,7 +5,7 @@ const App = () => {
     return (
         <div>
             <header style={{ textAlign: 'center', margin: '20px 0' }}>
-                <h1>Welcome to the Gemini AI Chatbot!</h1>
+                <h1>Welcome to the Bitrox AI Chatbot!</h1>
             </header>
             <main style={{ display: 'flex', justifyContent: 'center' }}>
                 <Chatbot />
