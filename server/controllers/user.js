@@ -1,29 +1,31 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { OK } from '../utils/responseCode.js';
 import { ApiResponse } from '../utils/apiResponse.js';
-import { faqData } from '../FAQ.js';
+// import { faqData } from '../FAQ.js';
 
 
-function findAnswer(prompt) {
-    for (let faq of faqData) {
-        if (prompt.toLowerCase().includes(faq.question.toLowerCase())) {
-            return faq.answer;
-        }
-    }
-    return "Sorry, I don't have the information you're looking for.";
-}
+// function findAnswer(prompt) {
+//     for (let faq of faqData) {
+//         if (prompt.toLowerCase().includes(faq.question.toLowerCase())) {
+//             return faq.answer;
+//         }
+//     }
+//     return "Sorry, I don't have the information you're looking for.";
+// }
 
 
 const Chatbot = async (req, res, next) => {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "tunedModels/bitrox-tunned-model-v2pzkxh5a550" });
+
+    console.log(model)
     const { prompt } = req.body;
 
-    const customResponse = findAnswer(prompt);
-    if (customResponse !== "Sorry, I don't have the information you're looking for.") {
-        return res.status(OK).json(new ApiResponse(OK, customResponse, "Successfully Generate Content"));
-    }
+    // const customResponse = findAnswer(prompt);
+    // if (customResponse !== "Sorry, I don't have the information you're looking for.") {
+    //     return res.status(OK).json(new ApiResponse(OK, customResponse, "Successfully Generate Content"));
+    // }
 
     try {
         const result = await model.generateContent(prompt);
