@@ -17,9 +17,8 @@ import { ApiResponse } from '../utils/apiResponse.js';
 const Chatbot = async (req, res, next) => {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
 
-    const model = genAI.getGenerativeModel({ model: "tunedModels/bitrox-tunned-model-g3dadgupl20i" });
+    const model = genAI.getGenerativeModel({ model: "tunedModels/bitrox-new-model-5flahzove0lj" });
 
-    console.log(model)
     const { prompt } = req.body;
 
     // const customResponse = findAnswer(prompt);

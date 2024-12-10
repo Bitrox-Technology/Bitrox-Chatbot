@@ -23,7 +23,8 @@ const Chatbot = () => {
 
     const handleSend = async () => {
         if (!input.trim()) return;
-
+         
+        setInput('');
         const newMessages = [...messages, { sender: 'user', text: input }];
         setMessages(newMessages);
         setIsTyping(true);
@@ -41,8 +42,6 @@ const Chatbot = () => {
             ]);
             setIsTyping(false);
         }
-
-        setInput('');
     };
 
     const showTypingEffect = (text) => {
