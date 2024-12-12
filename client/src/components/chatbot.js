@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './chatbot.css';
 import ReactMarkdown from 'react-markdown';
@@ -11,6 +11,7 @@ const Chatbot = () => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isTyping, setIsTyping] = useState(false);
+    const chatWindowRef = useRef(null); // Reference to the chat window
 
     // Display a welcome message when the chatbot loads
     useEffect(() => {
@@ -21,9 +22,16 @@ const Chatbot = () => {
         setMessages([welcomeMessage]);
     }, []);
 
+    // Scroll to the bottom of the chat window whenever messages change
+    useEffect(() => {
+        if (chatWindowRef.current) {
+            chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+        }
+    }, [messages]);
+
     const handleSend = async () => {
         if (!input.trim()) return;
-         
+
         setInput('');
         const newMessages = [...messages, { sender: 'user', text: input }];
         setMessages(newMessages);
@@ -32,7 +40,7 @@ const Chatbot = () => {
         try {
             const response = await axios.post(`${Url}/api/chat`, { prompt: input });
 
-            const responseText = response.data.data || 'I could not understand that.'; 
+            const responseText = response.data.data || 'I could not understand that.';
             showTypingEffect(responseText);
         } catch (error) {
             console.error('Error fetching AI response:', error.message);
@@ -92,16 +100,17 @@ const Chatbot = () => {
     };
 
     const components = {
+        a({ href, children, ...props }) {
+            return (
+                <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+                    {children}
+                </a>
+            );
+        },
         code({ node, inline, className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || '');
             return !inline && match ? (
                 <div className="code-block">
-                    <button
-                        className="copy-button"
-                        onClick={() => handleCopy(String(children).trim())}
-                    >
-                        Copy
-                    </button>
                     <SyntaxHighlighter
                         style={solarizedlight}
                         language={match[1]}
@@ -119,6 +128,7 @@ const Chatbot = () => {
         },
     };
 
+
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             handleSend();
@@ -128,7 +138,7 @@ const Chatbot = () => {
     return (
         <div className="chatbot-container">
             <div className="chat-header">Bitrox AI Chatbot</div>
-            <div className="chat-window">
+            <div className="chat-window" ref={chatWindowRef}>
                 {messages.map((msg, index) => (
                     <div key={index} className={`chat-message ${msg.sender}`}>
                         {msg.sender === 'bot' ? (
@@ -154,11 +164,11 @@ const Chatbot = () => {
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={handleKeyDown} 
+                    onKeyDown={handleKeyDown}
                     placeholder="Type your message..."
                 />
                 <button onClick={handleSend}>
-                <FaPaperPlane size={20} color="white" />
+                    <FaPaperPlane size={20} color="white" />
                 </button>
             </div>
         </div>
