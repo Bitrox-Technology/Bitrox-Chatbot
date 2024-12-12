@@ -27,7 +27,7 @@ const Chatbot = () => {
         if (chatWindowRef.current) {
             chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
         }
-    }, [messages]);
+    }, []);
 
     const handleSend = async () => {
         if (!input.trim()) return;
